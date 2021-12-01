@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TextEditor</string>
+    <string name="textBtnShow">Make toast</string>
 </resources>
