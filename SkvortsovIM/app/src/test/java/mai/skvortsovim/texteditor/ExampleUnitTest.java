@@ -1,4 +1,4 @@
-package com.example.texteditor;
+package mai.skvortsovim.texteditor;
 
 import org.junit.Test;
 
