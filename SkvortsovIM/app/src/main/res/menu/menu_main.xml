@@ -12,5 +12,9 @@
         android:id="@+id/action_load"
         android:title="@string/menuActionLoad">
     </item>
+    <item
+        android:id="@+id/action_list"
+        android:title="@string/menuActionList">
+    </item>
 
 </menu>

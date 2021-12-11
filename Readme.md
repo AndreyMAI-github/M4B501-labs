@@ -1,4 +1,3 @@
-## init
 # Base version working (Samsung 21)
 
 <div align="center">
