@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 fileNames.add(f.getName());
         }
 
-        notepad.setText(fileNames.toString().replaceAll("\\[|\\]",""));
+        notepad.setText("Files \nFileName:\n" + fileNames.toString().replaceAll("\\[|\\]",""));
 
     };
 
