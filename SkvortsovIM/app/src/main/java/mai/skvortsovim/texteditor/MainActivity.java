@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,13 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveOutTxt(){
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = openFileOutput(fileName.getText().toString(),MODE_PRIVATE);
+            fileOutputStream = openFileOutput(getFileName(),MODE_PRIVATE);
             fileOutputStream.write(notepad.getText().toString().getBytes(StandardCharsets.UTF_8));
             Toast tmp = Toast.makeText(getApplicationContext(),"File Saved", Toast.LENGTH_SHORT);
             tmp.show();
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     public void loadOutTxt(){
         FileInputStream fileInputStream = null;
         try{
-            fileInputStream = openFileInput(fileName.getText().toString());
+            fileInputStream = openFileInput(getFileName());
             byte[] data = new byte[fileInputStream.available()];
             fileInputStream.read(data);
             notepad.setText(new String(data));
@@ -98,16 +96,42 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private static final String ALLOWED_CHARACTERS ="0123456789qwertyuiopasdfghjklzxcvbnm";
+
+    private static String getRandomString(final int sizeOfRandomString)
+    {
+        final Random random=new Random();
+        final StringBuilder sb=new StringBuilder(sizeOfRandomString);
+        for(int i=0;i<sizeOfRandomString;++i)
+            sb.append(ALLOWED_CHARACTERS.charAt(random.nextInt(ALLOWED_CHARACTERS.length())));
+        return sb.toString();
+    }
+
+    public String getFileName(){
+        if (fileName.length() == 0) {
+            return getRandomString(12)+".txt";
+        } else {
+            return fileName.toString();
+        }
+    };
+
     public void getFileNames(){
-        File filePath = this.getFilesDir();
-        String filePathString = filePath.toString();
-        File fileDir = new File(filePathString);
-        ArrayList<String> fileNames = new ArrayList<String>();
-        for (File f : fileDir.listFiles()) {
-                fileNames.add(f.getName());
+        try {
+            File filePath = this.getFilesDir();
+            String filePathString = filePath.toString();
+            File fileDir = new File(filePathString);
+            ArrayList<String> fileNames = new ArrayList<String>();
+            for (File f : fileDir.listFiles()) {
+                fileNames.add(f.getName()); //В директории есть лишние файлы которые не читаются (системные?)
+            }
+            notepad.setText("-----|Files|-----\n" + fileNames.toString().replaceAll("\\[|\\]", ""));
+
+            Toast.makeText(getApplicationContext(),"Files listed", Toast.LENGTH_SHORT).show();
+        } catch (Exception exception) {
+            Toast tmp = Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_SHORT);
+            tmp.show();
         }
 
-        notepad.setText("Files \nFileName:\n" + fileNames.toString().replaceAll("\\[|\\]",""));
 
     };
 
