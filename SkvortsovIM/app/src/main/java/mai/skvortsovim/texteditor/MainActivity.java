@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Loaded File", Toast.LENGTH_SHORT).show();
         }catch (Exception exception){
             Toast tmp = Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_SHORT);
+            notepad.setText(exception.toString());
             tmp.show();
         }
     };
@@ -108,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getFileName(){
-        if (fileName.length() == 0) {
-            return getRandomString(12)+".txt";
+        if (fileName.getText().length() == 0) {
+            return getRandomString(12);
         } else {
-            return fileName.toString();
+            return fileName.getText().toString();
         }
     };
 
