@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_list:
                     Toast.makeText(getApplicationContext(),"List", Toast.LENGTH_SHORT).show();
-                    getFileNames();
+                    listFileNames();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -85,11 +85,15 @@ public class MainActivity extends AppCompatActivity {
     public void loadOutTxt(){
         FileInputStream fileInputStream = null;
         try{
+            if (getFileNames().contains(getFileName())) {
             fileInputStream = openFileInput(getFileName());
             byte[] data = new byte[fileInputStream.available()];
             fileInputStream.read(data);
             notepad.setText(new String(data));
-            Toast.makeText(getApplicationContext(),"Loaded File", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"File Loaded", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(),"File not found!", Toast.LENGTH_SHORT).show();
+            }
         }catch (Exception exception){
             Toast tmp = Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_SHORT);
             notepad.setText(exception.toString());
@@ -116,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void getFileNames(){
+    public ArrayList<String> getFileNames(){
         try {
             File filePath = this.getFilesDir();
             String filePathString = filePath.toString();
@@ -125,14 +129,23 @@ public class MainActivity extends AppCompatActivity {
             for (File f : fileDir.listFiles()) {
                 fileNames.add(f.getName()); //В директории есть лишние файлы которые не читаются (системные?)
             }
-            notepad.setText("-----|Files|-----\n" + fileNames.toString().replaceAll("\\[|\\]", ""));
+            return fileNames;
+        } catch (Exception exception) {
+            ArrayList<String> err = new ArrayList<String>();
+            Toast tmp = Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_SHORT);
+            tmp.show();
+            return err;
+        }
+    };
 
+    public void listFileNames(){
+        try {
+            notepad.setText("-----|Files|-----\n" + getFileNames().toString().replaceAll("\\[|\\]", ""));
             Toast.makeText(getApplicationContext(),"Files listed", Toast.LENGTH_SHORT).show();
         } catch (Exception exception) {
             Toast tmp = Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_SHORT);
             tmp.show();
         }
-
 
     };
 
