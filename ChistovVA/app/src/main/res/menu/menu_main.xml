@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:context="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/action_save"
+        android:title="@string/menuActionSave">
+    </item>
+    <item
+        android:id="@+id/action_load"
+        android:title="@string/menuActionLoad">
+    </item>
+
+</menu>
